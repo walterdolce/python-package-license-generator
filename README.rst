@@ -2,6 +2,12 @@
 license-generator
 =================
 
+============
+Contributing
+============
+
+Please see the DEVELOPMENT.rst file for more information.
+
 =======
 License
 =======
