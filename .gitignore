@@ -19,3 +19,6 @@
 
 # Python files
 *.pyc
+
+# Python virtualenv
+venv/
