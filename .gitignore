@@ -1,3 +1,4 @@
+#
 #    license-generator
 #    Copyright (C) 2016  Walter Dolce <walterdolce@gmail.com>
 #
@@ -13,6 +14,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
 
 # Jetbrains IDEs
 .idea/
