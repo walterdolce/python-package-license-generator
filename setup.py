@@ -15,13 +15,18 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+from setuptools import setup
 
-# Jetbrains IDEs
-.idea/
-
-# Python files
-*.pyc
-
-# Python virtualenv
-venv/
-*.egg-info/
+setup(
+    name='license_generator',
+    version='0.1.0',
+    author='Walter Dolce',
+    author_email='walterdolce@gmail.com',
+    description='A command line tool for generating license files',
+    license='GPLv3',
+    keywords='license generator cli utility file licenses generators utilities files',
+    packages=['license_generator'],
+    scripts=[
+        'bin/license-generator'
+    ]
+)

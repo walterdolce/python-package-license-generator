@@ -1,3 +1,4 @@
+#!/usr/local/bin/env python
 #
 #    license-generator
 #    Copyright (C) 2016  Walter Dolce <walterdolce@gmail.com>
@@ -15,13 +16,13 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+import sys
 
-# Jetbrains IDEs
-.idea/
+from license_generator.license_file_generator import LicenseFileGenerator
+from license_generator.license_file_locator import LicenseFileLocator
 
-# Python files
-*.pyc
+#TODO add scenario to verify failure of bin/license-generator when no license type parameter is passed
 
-# Python virtualenv
-venv/
-*.egg-info/
+if __name__ == '__main__':
+    generator = LicenseFileGenerator(locator=LicenseFileLocator())
+    generator.generate(sys.argv[2])

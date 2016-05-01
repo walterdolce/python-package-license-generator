@@ -15,13 +15,18 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+import unittest
+import license_generator.exceptions
 
-# Jetbrains IDEs
-.idea/
 
-# Python files
-*.pyc
+class TestFileGenerationError(unittest.TestCase):
+    def test_it_raises_exception_with_the_passed_message(self):
+        error_message = 'error!'
+        file_generation_error = license_generator.exceptions.FileGenerationError(error_message)
+        with self.assertRaises(license_generator.exceptions.FileGenerationError):
+            raise file_generation_error
+        self.assertEquals(error_message, str(file_generation_error))
 
-# Python virtualenv
-venv/
-*.egg-info/
+
+if __name__ == '__main__':
+    unittest.main()

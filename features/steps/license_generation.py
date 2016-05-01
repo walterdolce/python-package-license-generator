@@ -16,23 +16,54 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 from behave import *
+import subprocess
+import os
+from license_generator.exceptions import FileGenerationError
 
 
-@given(u'license-generator is installed on the system')
+@given(u'the license-generator package is installed on the system')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Given license-generator is installed on the system')
+    subprocess.check_output(
+        'python {base_path}/setup.py develop'.format(base_path=context.base_path),
+        shell=True
+    )
+    subprocess.check_call('which license-generator', shell=True)
 
 
-@when(u'I run license-generator\'s "generate" command with "MIT" as argument')
-def step_impl(context):
-    raise NotImplementedError(u'STEP: When I run license-generator\'s "generate" command with "MIT" as argument')
+@when(u'I run the license-generator "{command_name}" command with "{command_parameter}" as argument')
+def step_impl(context, command_name, command_parameter):
+    os.chdir(context.testing_ground_path)
+    subprocess.check_call(
+        'license-generator {command_name} {command_parameter}'.format(
+            command_name=command_name,
+            command_parameter=command_parameter
+        ),
+        shell=True
+    )
+    os.chdir(context.base_path)
 
 
-@then(u'the "LICENSE" file is generated')
-def step_impl(context):
-    raise NotImplementedError(u'STEP: Then the "LICENSE" file is generated')
+@then(u'the "{license_filename}" file is generated')
+def step_impl(context, license_filename):
+    license_file = os.path.join(context.testing_ground_path, license_filename)
+    if not os.path.isfile(license_file):
+        raise FileGenerationError(
+            '{license_file} file was not generated'.format(license_file=license_file)
+        )
 
 
-@then(u'the "LICENSE" file contains the "MIT" license')
-def step_impl(context):
-    raise NotImplementedError(u'STEP: Then the "LICENSE" file contains the "MIT" license')
+@then(u'the generated "{license_filename}" file contains the "{license_type}" license')
+def step_impl(context, license_filename, license_type):
+    generated_license_content = readfile(
+        os.path.join(context.testing_ground_path, license_filename)
+    )
+    builtin_license_content = readfile(
+        os.path.join(context.base_path, 'license_generator', 'licenses', license_type.lower())
+    )
+    assert(builtin_license_content == generated_license_content)
+
+
+def readfile(license_file):
+    with open(license_file, 'r') as f:
+        license_file_content = f.read()
+    return license_file_content

@@ -15,13 +15,25 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+import unittest
+from license_generator.file_generator import FileGenerator
 
-# Jetbrains IDEs
-.idea/
 
-# Python files
-*.pyc
+class TestFileGenerator(unittest.TestCase):
+    def test_it_raises_an_error_when_its_instantiated_directly(self):
+        with self.assertRaises(NotImplementedError):
+            FileGenerator()
 
-# Python virtualenv
-venv/
-*.egg-info/
+    def test_it_raises_an_error_when_its_method_is_called(self):
+        with self.assertRaises(NotImplementedError):
+            erroneous = MissingImplementationGenerator()
+            erroneous.generate('erroneous')
+
+
+class MissingImplementationGenerator(FileGenerator):
+    def __init__(self):
+        pass
+
+
+if __name__ == '__main__':
+    unittest.main()

@@ -15,13 +15,25 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+import unittest
+from license_generator.file_locator import FileLocator
 
-# Jetbrains IDEs
-.idea/
 
-# Python files
-*.pyc
+class TestFileLocator(unittest.TestCase):
+    def test_it_raises_an_error_when_its_instantiated_directly(self):
+        with self.assertRaises(NotImplementedError):
+            FileLocator()
 
-# Python virtualenv
-venv/
-*.egg-info/
+    def test_it_raises_an_error_when_its_method_is_called(self):
+        with self.assertRaises(NotImplementedError):
+            erroneous = MissingImplementationLocator()
+            erroneous.locate('erroneous')
+
+
+class MissingImplementationLocator(FileLocator):
+    def __init__(self):
+        pass
+
+
+if __name__ == '__main__':
+    unittest.main()

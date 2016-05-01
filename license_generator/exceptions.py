@@ -16,12 +16,13 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# Jetbrains IDEs
-.idea/
 
-# Python files
-*.pyc
+class FileGenerationError(IOError):
+    _value = ''
 
-# Python virtualenv
-venv/
-*.egg-info/
+    def __init__(self, value):
+        self._value = value
+        pass
+
+    def __str__(self):
+        return self._value

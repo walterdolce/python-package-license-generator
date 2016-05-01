@@ -20,8 +20,8 @@ Feature: License generation
   As a software engineer
   I want to be able to quickly generate license files
 
-  Scenario: It generate licenses based on license "slug"
-    Given license-generator is installed on the system
-    When I run license-generator's "generate" command with "MIT" as argument
+  Scenario: It generates licenses based on their name
+    Given the license-generator package is installed on the system
+    When I run the license-generator "generate" command with "MIT" as argument
     Then the "LICENSE" file is generated
-    And the "LICENSE" file contains the "MIT" license
+    And the generated "LICENSE" file contains the "MIT" license

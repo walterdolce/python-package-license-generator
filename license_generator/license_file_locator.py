@@ -15,13 +15,16 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+import os
 
-# Jetbrains IDEs
-.idea/
 
-# Python files
-*.pyc
-
-# Python virtualenv
-venv/
-*.egg-info/
+class LicenseFileLocator(object):
+    def locate(self, license_name):
+        license_name = license_name.lower()
+        license_path = os.path.join(os.path.dirname(__file__), 'licenses', license_name)
+        print license_path
+        if not os.path.exists(license_path):
+            raise IOError(
+                'License "{license_path}" does not exist.'.format(license_path=license_path)
+            )
+        return license_path

@@ -1,3 +1,4 @@
+
 #
 #    license-generator
 #    Copyright (C) 2016  Walter Dolce <walterdolce@gmail.com>
@@ -16,12 +17,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# Jetbrains IDEs
-.idea/
 
-# Python files
-*.pyc
+class FileLocator(object):
+    def __init__(self):
+        raise NotImplementedError('Cannot instantiate FileLocator directly.')
 
-# Python virtualenv
-venv/
-*.egg-info/
+    def locate(self, file_path):
+        raise NotImplementedError('Unimplemented method "locate" was called from base class.')

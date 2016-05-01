@@ -16,12 +16,3 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# Jetbrains IDEs
-.idea/
-
-# Python files
-*.pyc
-
-# Python virtualenv
-venv/
-*.egg-info/

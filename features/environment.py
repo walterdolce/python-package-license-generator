@@ -15,13 +15,26 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+import os
 
-# Jetbrains IDEs
-.idea/
 
-# Python files
-*.pyc
+def before_feature(context, feature):
+    """
+    Prepares the ground for the license file(s) to be created.
+    """
+    context.base_path = os.getcwd()
+    context.testing_ground_path = os.path.join(context.base_path, 'testing-ground')
+    if not os.path.exists(context.testing_ground_path):
+        os.mkdir(context.testing_ground_path)
 
-# Python virtualenv
-venv/
-*.egg-info/
+
+def after_feature(context, feature):
+    """
+    Clears everything up.
+    """
+    if os.path.exists(context.testing_ground_path):
+        license_file = os.path.join(context.testing_ground_path, 'LICENSE')
+        if os.path.exists(license_file):
+            os.remove(license_file)
+        os.rmdir(context.testing_ground_path)
+    os.chdir(context.base_path)

@@ -15,13 +15,23 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+import os
+import shutil
 
-# Jetbrains IDEs
-.idea/
+from license_generator.file_generator import FileGenerator
+from license_generator.file_locator import FileLocator
 
-# Python files
-*.pyc
 
-# Python virtualenv
-venv/
-*.egg-info/
+class LicenseFileGenerator(FileGenerator):
+    _locator = None
+
+    def __init__(self, locator=FileLocator):
+        self._locator = locator
+
+    def generate(self, license_name):
+        license_file = self._locator.locate(license_name)
+        shutil.copy(
+            license_file,
+            os.path.join(os.getcwd(), 'LICENSE')
+        )
+        pass
