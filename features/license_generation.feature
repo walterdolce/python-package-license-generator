@@ -20,8 +20,25 @@ Feature: License generation
   As a software engineer
   I want to be able to quickly generate license files
 
-  Scenario: It generates licenses based on their name
+  Scenario Outline: It generates licenses based on their name
     Given the license-generator package is installed on the system
-    When I run the license-generator "generate" command with "MIT" as argument
+    When I run the license-generator "generate" command with "<license_type>" as argument
     Then the "LICENSE" file is generated
-    And the generated "LICENSE" file contains the "MIT" license
+    And the generated "LICENSE" file contains the "<license_type_code>" license
+
+    Examples:
+      | license_type | license_type_code |
+      | AGPL30       | agpl30            |
+      | agpl30       | agpl30            |
+      | APACHE20     | apache20          |
+      | apache20     | apache20          |
+      | GPL30        | gpl30             |
+      | gpl30        | gpl30             |
+      | LGPL30       | lgpl30            |
+      | lgpl30       | lgpl30            |
+      | MIT          | mit               |
+      | mit          | mit               |
+      | MPL20        | mpl20             |
+      | mpl20        | mpl20             |
+      | UNLICENSE    | unlicense         |
+      | unlicense    | unlicense         |
