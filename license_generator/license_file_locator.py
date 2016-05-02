@@ -22,7 +22,6 @@ class LicenseFileLocator(object):
     def locate(self, license_name):
         license_name = license_name.lower()
         license_path = os.path.join(os.path.dirname(__file__), 'licenses', license_name)
-        print license_path
         if not os.path.exists(license_path):
             raise IOError(
                 'License "{license_path}" does not exist.'.format(license_path=license_path)
