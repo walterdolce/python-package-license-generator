@@ -15,12 +15,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-from license_generator.file_locator import FileLocator
 
 
 class FileGenerator(object):
-    def __init__(self, locator=FileLocator):
-        raise NotImplementedError('Cannot instantiate FileGenerator directly.')
-
-    def generate(self, license_type):
+    def generate(self, license_path):
         raise NotImplementedError('Unimplemented method "generate" was called from base class.')

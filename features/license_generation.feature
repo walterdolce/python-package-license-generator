@@ -28,6 +28,8 @@ Feature: License generation
 
     Examples:
       | license_type | license_type_code |
+      | AGPLv3       | agpl30            |
+      | agplv3       | agpl30            |
       | AGPL30       | agpl30            |
       | agpl30       | agpl30            |
       | APACHE20     | apache20          |

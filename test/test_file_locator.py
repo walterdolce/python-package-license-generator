@@ -24,13 +24,13 @@ class TestFileLocator(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             FileLocator()
 
-    def test_it_raises_an_error_when_its_method_is_called(self):
+    def test_it_raises_an_error_when_its_method_is_called_but_not_implemented(self):
         with self.assertRaises(NotImplementedError):
-            erroneous = MissingImplementationLocator()
-            erroneous.locate('erroneous')
+            erroneous = IncompleteLocator()
+            erroneous.locate('non_existing')
 
 
-class MissingImplementationLocator(FileLocator):
+class IncompleteLocator(FileLocator):
     def __init__(self):
         pass
 

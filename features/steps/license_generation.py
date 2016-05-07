@@ -32,14 +32,23 @@ def step_impl(context):
 
 @when(u'I run the license-generator "{command_name}" command with "{command_parameter}" as argument')
 def step_impl(context, command_name, command_parameter):
+    process_error = None
     os.chdir(context.testing_ground_path)
-    subprocess.check_call(
-        'license-generator {command_name} {command_parameter}'.format(
-            command_name=command_name,
-            command_parameter=command_parameter
-        ),
-        shell=True
-    )
+    try:
+        subprocess.check_call(
+            'license-generator {command_name} {command_parameter}'.format(
+                command_name=command_name,
+                command_parameter=command_parameter
+            ),
+            shell=True
+        )
+    except subprocess.CalledProcessError as e:
+        process_error = e
+    finally:
+        if process_error is not None:
+            print(process_error.output)
+            raise process_error
+
     os.chdir(context.base_path)
 
 

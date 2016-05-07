@@ -16,10 +16,11 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+from license_generator.transliterator import Transliterator
 
 
 class FileLocator(object):
-    def __init__(self):
+    def __init__(self, transliterator=Transliterator):
         raise NotImplementedError('Cannot instantiate FileLocator directly.')
 
     def locate(self, file_path):

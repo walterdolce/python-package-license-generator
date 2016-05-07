@@ -19,19 +19,9 @@ import os
 import shutil
 
 from license_generator.file_generator import FileGenerator
-from license_generator.file_locator import FileLocator
 
 
 class LicenseFileGenerator(FileGenerator):
-    _locator = None
-
-    def __init__(self, locator=FileLocator):
-        self._locator = locator
-
-    def generate(self, license_name):
-        license_file = self._locator.locate(license_name)
-        shutil.copy(
-            license_file,
-            os.path.join(os.getcwd(), 'LICENSE')
-        )
-        pass
+    def generate(self, license_path):
+        shutil.copy(license_path, os.path.join(os.getcwd(), 'LICENSE'))
+        print 'License "{license_file}" generated.'.format(license_file=license_path)

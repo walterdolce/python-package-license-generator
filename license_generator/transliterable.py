@@ -15,19 +15,23 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-import unittest
-from license_generator.file_generator import FileGenerator
 
 
-class TestFileGenerator(unittest.TestCase):
-    def test_it_raises_an_error_when_its_method_is_called_but_not_implemented(self):
-        with self.assertRaises(NotImplementedError):
-            erroneous = IncompleteFileGenerator()
-            erroneous.generate('foo')
+class Transliterable(object):
+    _transliterable = None
+    _isTransliterated = False
 
+    def __init__(self, transliterable=None):
+        self._transliterable = str(transliterable)
 
-class IncompleteFileGenerator(FileGenerator):
-    pass
+    def set_transliterable(self, transliterable=None):
+        self._transliterable = str(transliterable)
 
-if __name__ == '__main__':
-    unittest.main()
+    def get_transliterable(self):
+        return self._transliterable
+
+    def set_is_transliterated(self, is_transliterated=False):
+        self._isTransliterated = bool(is_transliterated)
+
+    def is_transliterated(self):
+        return self._isTransliterated

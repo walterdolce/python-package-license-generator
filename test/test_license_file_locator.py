@@ -24,18 +24,18 @@ class TestLicenseFileLocator(unittest.TestCase):
     def test_it_raises_an_error_when_the_requested_license_does_not_exist(self):
         locator = LicenseFileLocator()
         with self.assertRaises(IOError):
-            locator.locate('not_existent_license')
+            locator.locate('asd')
 
     def test_it_returns_the_absolute_path_to_the_requested_license(self):
         locator = LicenseFileLocator()
-        license_path = locator.locate('mit')
-        mit_license_path = os.path.join(
+        license_path = locator.locate('agpl30')
+        expected_license_path = os.path.join(
             os.path.dirname(os.path.dirname(__file__)),
             'license_generator',
             'licenses',
-            'mit'
+            'agpl30'
         )
-        self.assertEqual(license_path, mit_license_path)
+        self.assertEqual(license_path, expected_license_path)
 
 
 if __name__ == '__main__':

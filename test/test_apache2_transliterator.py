@@ -16,18 +16,19 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 import unittest
-from license_generator.file_generator import FileGenerator
+from license_generator.apache2_transliterator import Apache2Transliterator
+from license_generator.transliterable import Transliterable
 
 
-class TestFileGenerator(unittest.TestCase):
-    def test_it_raises_an_error_when_its_method_is_called_but_not_implemented(self):
-        with self.assertRaises(NotImplementedError):
-            erroneous = IncompleteFileGenerator()
-            erroneous.generate('foo')
+class TestApache2Transliterator(unittest.TestCase):
+    def test_it_returns_the_expected_transliterated_bundled_license_filename(self):
+        expected_license_filename = 'apache20'
+        transliterables = ['apache20', 'APACHE20']
+        for transliterable in transliterables:
+            transliterator = Apache2Transliterator()
+            transliterated = transliterator.transliterate(Transliterable(transliterable))
+            self.assertEquals(transliterated.get_transliterable(), expected_license_filename)
 
-
-class IncompleteFileGenerator(FileGenerator):
-    pass
 
 if __name__ == '__main__':
     unittest.main()
