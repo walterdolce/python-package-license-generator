@@ -22,7 +22,7 @@ matrix:
   fast_finish: true
 install:
   - pip install .
-  - pip install -r requirements.txt
+  - pip install --no-use-wheel -r requirements.txt
 script:
   - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then python -m unittest discover; fi
   - behave
