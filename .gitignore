@@ -25,3 +25,7 @@
 # Python virtualenv
 venv/
 *.egg-info/
+
+# Python coverage package
+.coverage
+reports/
