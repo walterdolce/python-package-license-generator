@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/walterdolce/python-package-license-generator.svg?branch=master
+    :target: https://travis-ci.org/walterdolce/python-package-license-generator
+
 =================
 license-generator
 =================
