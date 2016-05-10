@@ -28,5 +28,6 @@ setup(
     packages=['license_generator'],
     scripts=[
         'bin/license-generator'
-    ]
+    ],
+    test_suite='test'
 )
