@@ -35,7 +35,7 @@ $ pip install -r requirements.txt
 ==========================
 Make sure lights are green
 ==========================
-You should be ready by now. Before you start changing files around though, please make sure all the project unit and integration tests pass.
+You should have everything you need by now. Before you start changing files around though, please make sure all the project's unit and integration tests pass.
 First, run the unit tests: ::
 
 $ python -m unittest discover -f
@@ -46,7 +46,8 @@ $ behave
 
 If you don't get any error (I strive not to leave the project in a "red state", but hey!), then it means you can FINALLY start!
 
-**Important note:** if you're willing to do a major overhaul of the current project's structure and/or functionalities, please start a conversation first. It might save you from doing work which might not be merged!
+**Important note:** if you're willing to do a major overhaul of the current project's structure and/or a new feature which require you to make a lot of changes, please start a conversation first. It might save you from doing work which might not be merged! The best way to do it is to open an issue here on GitHub or, if you want to keep things private, send
+ me an email.
 
 =======
 License
