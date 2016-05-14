@@ -32,6 +32,17 @@ from license_generator.unlicense_transliterator import UnlicenseTransliterator
 
 if __name__ == '__main__':
     try:
+
+        if sys.argv[1] == 'version':
+            print(
+                """license-generator 0.1.0
+Copyright (C) 2016  Walter Dolce <walterdolce@gmail.com>
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law."""
+            )
+            exit(0)
+
         transliterable = Transliterable(sys.argv[2])
 
         agplv3_transliterator = AGPLv3Transliterator()

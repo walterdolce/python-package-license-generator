@@ -10,9 +10,20 @@ licenses can be found in the ``license_generator/licenses/`` folder.
 
 The package is undergoing development so you **may** find bugs. The only command currently available is ``generate``,
 which, as you might guess, will generate the license you will specify.
+
+Usage
+-----
+To generate a license, run the command by specifying the license name as shown below.
 Example: ::
 
     $ license-generator generate MIT
+
+
+Commands Available
+------------------
+
++ **generate**: generates a LICENSE file from the license name specified after the command.
++ **version**: prints package version, copyright and brief license information.
 
 ============
 Contributing
