@@ -20,7 +20,7 @@ Feature: Package information
   As a user
   I want to be able to get relevant information about and from the package
 
-  Scenario: User is able to know about the package version
+  Scenario: User is able to know the package version
     Given the license-generator package is installed on the system
     When I run the license-generator "version" command
     Then I should see information about its name
