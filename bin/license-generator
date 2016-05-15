@@ -1,4 +1,4 @@
-#!/usr/local/bin/env python
+#!/usr/bin/env python
 #
 #    license-generator
 #    Copyright (C) 2016  Walter Dolce <walterdolce@gmail.com>
@@ -17,6 +17,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 import sys
+import license_generator
 from license_generator.agplv3_transliterator import AGPLv3Transliterator
 from license_generator.apache2_transliterator import Apache2Transliterator
 from license_generator.gplv3_transliterator import GPLv3Transliterator
@@ -26,39 +27,46 @@ from license_generator.license_file_locator import LicenseFileLocator
 from license_generator.mit_transliterator import MitTransliterator
 from license_generator.mplv2_transliterator import MPLv2Transliterator
 from license_generator.transliterable import Transliterable
-
-# TODO add scenario to verify failure of bin/license-generator when no license type parameter is passed
 from license_generator.unlicense_transliterator import UnlicenseTransliterator
 
 if __name__ == '__main__':
     try:
-        transliterable = Transliterable(sys.argv[2])
+        command = sys.argv[1]
 
-        agplv3_transliterator = AGPLv3Transliterator()
-        apache_transliterator = Apache2Transliterator()
-        gplv3_transliterator = GPLv3Transliterator()
-        lgplv3_transliterator = LGPLv3Transliterator()
-        mit_transliterator = MitTransliterator()
-        mplv2_transliterator = MPLv2Transliterator()
-        unlicense_transliterator = UnlicenseTransliterator()
+        if command == 'version':
+            print(license_generator.__version_info__)
+            exit(0)
 
-        mplv2_transliterator.set_successor(unlicense_transliterator)
-        mit_transliterator.set_successor(mplv2_transliterator)
-        lgplv3_transliterator.set_successor(mit_transliterator)
-        gplv3_transliterator.set_successor(lgplv3_transliterator)
-        apache_transliterator.set_successor(gplv3_transliterator)
-        agplv3_transliterator.set_successor(apache_transliterator)
+        if command == 'generate':
+            transliterable = Transliterable(sys.argv[2])
 
-        transliterable = agplv3_transliterator.transliterate(transliterable)
-        license_name = transliterable.get_transliterable()
+            agplv3_transliterator = AGPLv3Transliterator()
+            apache_transliterator = Apache2Transliterator()
+            gplv3_transliterator = GPLv3Transliterator()
+            lgplv3_transliterator = LGPLv3Transliterator()
+            mit_transliterator = MitTransliterator()
+            mplv2_transliterator = MPLv2Transliterator()
+            unlicense_transliterator = UnlicenseTransliterator()
 
-        locator = LicenseFileLocator()
-        license_path = locator.locate(license_name)
+            mplv2_transliterator.set_successor(unlicense_transliterator)
+            mit_transliterator.set_successor(mplv2_transliterator)
+            lgplv3_transliterator.set_successor(mit_transliterator)
+            gplv3_transliterator.set_successor(lgplv3_transliterator)
+            apache_transliterator.set_successor(gplv3_transliterator)
+            agplv3_transliterator.set_successor(apache_transliterator)
 
-        generator = LicenseFileGenerator()
-        generator.generate(license_path)
+            transliterable = agplv3_transliterator.transliterate(transliterable)
+            license_name = transliterable.get_transliterable()
+
+            locator = LicenseFileLocator()
+            license_path = locator.locate(license_name)
+
+            generator = LicenseFileGenerator()
+            generator.generate(license_path)
     finally:
         exception = sys.exc_info()
         if exception[1] is not None:
             print(exception[1])
             exit(1)
+
+# TODO add scenario to verify failure of bin/license-generator when no license type parameter is passed
