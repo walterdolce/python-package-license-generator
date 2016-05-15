@@ -18,9 +18,9 @@
 Feature: Package information
   In order to know more about the license-generator package
   As a user
-  I want to be able to get relevant information about and from the package
+  I want to be able to get relevant information from the package about itself
 
-  Scenario: User ask for package version information
+  Scenario: User asks for package version information
     Given the license-generator package is installed on the system
     When I run the license-generator "version" command
     Then I should see its name
