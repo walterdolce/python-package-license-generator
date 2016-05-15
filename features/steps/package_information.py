@@ -15,6 +15,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+import pprint
 import subprocess
 import license_generator
 import os
@@ -29,12 +30,7 @@ def assert_command_output_presence(context):
 
 @when(u'I run the license-generator "{command_name}" command')
 def step_impl(context, command_name):
-    os.chdir(context.testing_ground_path)
-    context.command_output = subprocess.check_output(
-        license_generator.__command_format__.format(command_name=command_name),
-        shell=True
-    )
-    os.chdir(context.base_path)
+    run_command(command_name, context)
 
 
 @then(u'I should see its name')
@@ -63,3 +59,23 @@ def step_impl(context):
     command_output_lines.pop(0)
     command_output_lines.pop(0)
     assert (os.linesep.join(command_output_lines) == license_generator.__legal_status__)
+
+
+@when(u'I run the license-generator')
+def step_impl(context):
+    run_command('', context)
+
+
+@then(u'I should see the usage info')
+def step_impl(context):
+    assert_command_output_presence(context)
+    assert (context.command_output == license_generator.__usage_info__ + os.linesep)
+
+
+def run_command(command_name, context):
+    os.chdir(context.testing_ground_path)
+    context.command_output = subprocess.check_output(
+        license_generator.__command_format__.format(command_name=command_name),
+        shell=True
+    )
+    os.chdir(context.base_path)

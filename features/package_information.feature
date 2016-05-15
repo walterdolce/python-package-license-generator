@@ -27,3 +27,13 @@ Feature: Package information
     And I should see its version
     And I should see its copyright notice
     And I should see its legal status
+
+  Scenario: User doesn't send any command
+    Given the license-generator package is installed on the system
+    When I run the license-generator
+    Then I should see the usage info
+
+  Scenario: User asks for usage info
+    Given the license-generator package is installed on the system
+    When I run the license-generator "help" command
+    Then I should see the usage info
