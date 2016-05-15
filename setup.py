@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #
 #    license-generator
 #    Copyright (C) 2016  Walter Dolce <walterdolce@gmail.com>
@@ -15,13 +16,29 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-from setuptools import setup
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath('license_generator'))
+
+try:
+    from setuptools import setup
+except ImportError:
+    print(
+        "license-generator needs setuptools in order to build."
+        # TODO ask it we'd take care of setting up/installing one?
+        "Install it using your package manager (usually python-setuptools)"
+        "or via pip (pip install setuptools)."
+    )
+    sys.exit(1)
+
+import license_generator
 
 setup(
     name='license_generator',
-    version='0.1.0',
-    author='Walter Dolce',
-    author_email='walterdolce@gmail.com',
+    version=license_generator.__version__,
+    author=license_generator.__author__,
+    author_email=license_generator.__author_email__,
     description='A command line tool for generating license files',
     license='GPLv3',
     keywords='license generator cli utility file licenses generators utilities files',

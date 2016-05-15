@@ -1,4 +1,4 @@
-#!/usr/local/bin/env python
+#!/usr/bin/env python
 #
 #    license-generator
 #    Copyright (C) 2016  Walter Dolce <walterdolce@gmail.com>
@@ -17,6 +17,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 import sys
+import license_generator
 from license_generator.agplv3_transliterator import AGPLv3Transliterator
 from license_generator.apache2_transliterator import Apache2Transliterator
 from license_generator.gplv3_transliterator import GPLv3Transliterator
@@ -26,21 +27,24 @@ from license_generator.license_file_locator import LicenseFileLocator
 from license_generator.mit_transliterator import MitTransliterator
 from license_generator.mplv2_transliterator import MPLv2Transliterator
 from license_generator.transliterable import Transliterable
-
-# TODO add scenario to verify failure of bin/license-generator when no license type parameter is passed
 from license_generator.unlicense_transliterator import UnlicenseTransliterator
 
 if __name__ == '__main__':
     try:
+        command = sys.argv[1]
 
-        if sys.argv[1] == 'version':
-            print(
-                """license-generator 0.1.0
-Copyright (C) 2016  Walter Dolce <walterdolce@gmail.com>
+        if command == 'version':
+            output = """license-generator %(version)
+Copyright (C) 2016  %(author) %(author_email)
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
 This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law."""
-            )
+There is NO WARRANTY, to the extent permitted by law.""" % {
+                "author": license_generator.__author__,
+                "author_email": license_generator.__author_email__,
+                "version": license_generator.__version__
+            }
+
+            print(output)
             exit(0)
 
         transliterable = Transliterable(sys.argv[2])
@@ -73,3 +77,5 @@ There is NO WARRANTY, to the extent permitted by law."""
         if exception[1] is not None:
             print(exception[1])
             exit(1)
+
+# TODO add scenario to verify failure of bin/license-generator when no license type parameter is passed
