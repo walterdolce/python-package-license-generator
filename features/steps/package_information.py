@@ -34,7 +34,7 @@ def step_impl(context, command_name):
     os.chdir(context.base_path)
 
 
-@then(u'I should see information about its name')
+@then(u'I should see its name')
 def step_impl(context):
     assert_command_output_presence(context)
     command_output = context.command_output.split(os.linesep)
@@ -49,7 +49,7 @@ def assert_command_output_presence(context):
         )
 
 
-@then(u'I should see information about its version')
+@then(u'I should see its version')
 def step_impl(context):
     assert_command_output_presence(context)
     command_output = context.command_output.split(os.linesep)
@@ -57,7 +57,7 @@ def step_impl(context):
     assert (command_output[1] == license_generator.__version__)
 
 
-@then(u'I should see information about its copyright notice')
+@then(u'I should see its copyright notice')
 def step_impl(context):
     assert_command_output_presence(context)
     command_output = context.command_output.split(os.linesep)
@@ -65,7 +65,7 @@ def step_impl(context):
     assert (command_output[1] == version)
 
 
-@then(u'I should see information about its legal status')
+@then(u'I should see its legal status')
 def step_impl(context):
     assert_command_output_presence(context)
     command_output = context.command_output.split(os.linesep)
