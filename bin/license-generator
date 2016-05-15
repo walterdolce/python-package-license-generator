@@ -34,44 +34,35 @@ if __name__ == '__main__':
         command = sys.argv[1]
 
         if command == 'version':
-            output = """license-generator %(version)
-Copyright (C) 2016  %(author) %(author_email)
-License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.""" % {
-                "author": license_generator.__author__,
-                "author_email": license_generator.__author_email__,
-                "version": license_generator.__version__
-            }
-
-            print(output)
+            print(license_generator.__version_info__)
             exit(0)
 
-        transliterable = Transliterable(sys.argv[2])
+        if command == 'generate':
+            transliterable = Transliterable(sys.argv[2])
 
-        agplv3_transliterator = AGPLv3Transliterator()
-        apache_transliterator = Apache2Transliterator()
-        gplv3_transliterator = GPLv3Transliterator()
-        lgplv3_transliterator = LGPLv3Transliterator()
-        mit_transliterator = MitTransliterator()
-        mplv2_transliterator = MPLv2Transliterator()
-        unlicense_transliterator = UnlicenseTransliterator()
+            agplv3_transliterator = AGPLv3Transliterator()
+            apache_transliterator = Apache2Transliterator()
+            gplv3_transliterator = GPLv3Transliterator()
+            lgplv3_transliterator = LGPLv3Transliterator()
+            mit_transliterator = MitTransliterator()
+            mplv2_transliterator = MPLv2Transliterator()
+            unlicense_transliterator = UnlicenseTransliterator()
 
-        mplv2_transliterator.set_successor(unlicense_transliterator)
-        mit_transliterator.set_successor(mplv2_transliterator)
-        lgplv3_transliterator.set_successor(mit_transliterator)
-        gplv3_transliterator.set_successor(lgplv3_transliterator)
-        apache_transliterator.set_successor(gplv3_transliterator)
-        agplv3_transliterator.set_successor(apache_transliterator)
+            mplv2_transliterator.set_successor(unlicense_transliterator)
+            mit_transliterator.set_successor(mplv2_transliterator)
+            lgplv3_transliterator.set_successor(mit_transliterator)
+            gplv3_transliterator.set_successor(lgplv3_transliterator)
+            apache_transliterator.set_successor(gplv3_transliterator)
+            agplv3_transliterator.set_successor(apache_transliterator)
 
-        transliterable = agplv3_transliterator.transliterate(transliterable)
-        license_name = transliterable.get_transliterable()
+            transliterable = agplv3_transliterator.transliterate(transliterable)
+            license_name = transliterable.get_transliterable()
 
-        locator = LicenseFileLocator()
-        license_path = locator.locate(license_name)
+            locator = LicenseFileLocator()
+            license_path = locator.locate(license_name)
 
-        generator = LicenseFileGenerator()
-        generator.generate(license_path)
+            generator = LicenseFileGenerator()
+            generator.generate(license_path)
     finally:
         exception = sys.exc_info()
         if exception[1] is not None:

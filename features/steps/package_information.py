@@ -18,6 +18,8 @@
 import pprint
 import subprocess
 from collections import deque
+
+import license_generator
 import os
 from behave import *
 
@@ -52,14 +54,15 @@ def step_impl(context):
     assert_command_output_presence(context)
     command_output = context.command_output.split(os.linesep)
     command_output = command_output[0].split(' ')
-    assert (command_output[1] == '0.1.0')
+    assert (command_output[1] == license_generator.__version__)
 
 
 @then(u'I should see information about its copyright notice')
 def step_impl(context):
     assert_command_output_presence(context)
     command_output = context.command_output.split(os.linesep)
-    assert (command_output[1] == 'Copyright (C) 2016  Walter Dolce <walterdolce@gmail.com>')
+    version = license_generator.__copyright_short__
+    assert (command_output[1] == version)
 
 
 @then(u'I should see information about its legal status')
