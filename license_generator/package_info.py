@@ -18,7 +18,7 @@
 __author__ = 'Walter Dolce'
 __author_email__ = 'walterdolce@gmail.com'
 __command_format__ = 'license-generator {command_name}'
-__copyright_notice__ = 'Copyright (C) 2016  {author} {author_email}'.format(
+__copyright_notice__ = 'Copyright (C) 2016  {author} <{author_email}>'.format(
     author=__author__,
     author_email=__author_email__
 )
