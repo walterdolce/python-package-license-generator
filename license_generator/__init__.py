@@ -15,24 +15,77 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-__author__ = 'Walter Dolce'
-__author_email__ = 'walterdolce@gmail.com'
-__command_format__ = 'license-generator {command_name}'
-__copyright_notice__ = 'Copyright (C) 2016  {author} {author_email}'.format(
-    author=__author__,
-    author_email=__author_email__
-)
-__license_short__ = 'License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>'
-__legal_status__ = """{license_short}
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.""".format(license_short=__license_short__)
-__version__ = '0.3.0'
-__version_info__ = (
-    "license-generator {version}\n"
-    "{copyright_notice}\n"
-    "{legal_status}").format(copyright_notice=__copyright_notice__, legal_status=__legal_status__, version=__version__
-)
-__usage_info__ = """usage:
-    license-generator generate A_LICENSE    # Generates the license specified, see README.rst for more info.
-    license-generator help                  # Shows this output.
-    license-generator version               # Shows the program version, copyright notice and legal status."""
+import pprint
+
+from license_generator.package_info import __usage_info__ as usage_info
+from license_generator.package_info import __version_info__ as version_info
+from license_generator.agplv3_transliterator import AGPLv3Transliterator
+from license_generator.apache2_transliterator import Apache2Transliterator
+from license_generator.gplv3_transliterator import GPLv3Transliterator
+from license_generator.lgplv3_transliterator import LGPLv3Transliterator
+from license_generator.license_file_generator import LicenseFileGenerator
+from license_generator.license_file_locator import LicenseFileLocator
+from license_generator.mit_transliterator import MitTransliterator
+from license_generator.mplv2_transliterator import MPLv2Transliterator
+from license_generator.transliterable import Transliterable
+from license_generator.unlicense_transliterator import UnlicenseTransliterator
+
+
+class LicenseGenerator(object):
+    def help(self):
+        self.run_command('help')
+
+    def generate(self, license_name=None):
+        if not license_name:
+            print('No license to generate was specified.')
+            exit(1)
+
+        transliterable = Transliterable(license_name)
+
+        agplv3_transliterator = AGPLv3Transliterator()
+        apache_transliterator = Apache2Transliterator()
+        gplv3_transliterator = GPLv3Transliterator()
+        lgplv3_transliterator = LGPLv3Transliterator()
+        mit_transliterator = MitTransliterator()
+        mplv2_transliterator = MPLv2Transliterator()
+        unlicense_transliterator = UnlicenseTransliterator()
+
+        mplv2_transliterator.set_successor(unlicense_transliterator)
+        mit_transliterator.set_successor(mplv2_transliterator)
+        lgplv3_transliterator.set_successor(mit_transliterator)
+        gplv3_transliterator.set_successor(lgplv3_transliterator)
+        apache_transliterator.set_successor(gplv3_transliterator)
+        agplv3_transliterator.set_successor(apache_transliterator)
+
+        transliterable = agplv3_transliterator.transliterate(transliterable)
+        license_name = transliterable.get_transliterable()
+
+        locator = LicenseFileLocator()
+        license_path = locator.locate(license_name)
+
+        generator = LicenseFileGenerator()
+        generator.generate(license_path)
+
+    def run_command(self, *args):
+        args = args[0]
+
+        if len(args) < 1:
+            self.help()
+
+        try:
+            command = args[1]
+        except IndexError:
+            command = 'help'
+
+        if command == 'help':
+            print(usage_info)
+            exit(0)
+        if command == 'version':
+            print(version_info)
+            exit(0)
+        if command == 'generate':
+            try:
+                license_name = args[2]
+            except IndexError:
+                license_name = None
+            self.generate(license_name=license_name)

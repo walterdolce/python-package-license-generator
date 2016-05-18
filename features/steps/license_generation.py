@@ -15,6 +15,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+import pprint
+
 from behave import *
 import subprocess
 import os
@@ -35,19 +37,20 @@ def step_impl(context, command_name, command_parameter):
     process_error = None
     os.chdir(context.testing_ground_path)
     try:
-        subprocess.check_call(
+        subprocess.check_output(
             'license-generator {command_name} {command_parameter}'.format(
                 command_name=command_name,
                 command_parameter=command_parameter
             ),
             shell=True
         )
-    except subprocess.CalledProcessError as e:
+    except Exception as e:
         process_error = e
     finally:
         if process_error is not None:
-            print(process_error.output)
-            raise process_error
+            pprint.pprint(process_error.__dict__)
+            raise Exception('bla')
+            # raise process_error
 
     os.chdir(context.base_path)
 
@@ -69,7 +72,20 @@ def step_impl(context, license_filename, license_type):
     builtin_license_content = readfile(
         os.path.join(context.base_path, 'license_generator', 'licenses', license_type.lower())
     )
-    assert(builtin_license_content == generated_license_content)
+    assert (builtin_license_content == generated_license_content)
+
+
+@then(u'I will be remainded to specify a license name')
+def step_impl(context):
+    context.assert_command_output_presence()
+    assert (context.command_output.strip() == 'No license to generate was specified.')
+
+
+@then(u'the program will exit with an error code')
+def step_impl(context):
+    if not context.returncode:
+        raise RuntimeError('No returncode attribute was set in the context object.')
+    assert (context.returncode != 0)
 
 
 def readfile(license_file):

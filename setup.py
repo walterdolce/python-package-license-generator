@@ -32,13 +32,15 @@ except ImportError:
     )
     sys.exit(1)
 
-import license_generator
+from license_generator.package_info import __version__ as version
+from license_generator.package_info import __author__ as author
+from license_generator.package_info import __author_email__ as author_email
 
 setup(
     name='license_generator',
-    version=license_generator.__version__,
-    author=license_generator.__author__,
-    author_email=license_generator.__author_email__,
+    version=version,
+    author=author,
+    author_email=author_email,
     description='A command line tool for generating license files',
     license='GPLv3',
     keywords='license generator cli utility file licenses generators utilities files',

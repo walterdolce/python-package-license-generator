@@ -44,3 +44,9 @@ Feature: License generation
       | mpl20        | mpl20             |
       | UNLICENSE    | unlicense         |
       | unlicense    | unlicense         |
+
+  Scenario: Generate command fails if no license is specified
+    Given the license-generator package is installed on the system
+    When I run the license-generator "generate" command with no arguments
+    Then I will be remainded to specify a license name
+    And the program will exit with an error code

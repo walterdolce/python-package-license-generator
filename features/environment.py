@@ -15,7 +15,31 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+import pprint
+import subprocess
+import license_generator
 import os
+from types import MethodType
+
+
+def assert_command_output_presence(self):
+    """Verifies whether the context has the command_output attribute set."""
+    if not hasattr(self, 'command_output'):
+        raise RuntimeError('The context has no command_output attribute set.')
+
+
+def run_command(self, command_name):
+    os.chdir(self.testing_ground_path)
+    self.command_output = subprocess.check_output(
+        license_generator.package_info.__command_format__.format(command_name=command_name),
+        shell=True
+    )
+    os.chdir(self.base_path)
+
+
+def before_all(context):
+    context.assert_command_output_presence = MethodType(assert_command_output_presence, context)
+    context.run_command = MethodType(run_command, context)
 
 
 def before_feature(context, feature):
@@ -38,3 +62,8 @@ def after_feature(context, feature):
             os.remove(license_file)
         os.rmdir(context.testing_ground_path)
     os.chdir(context.base_path)
+
+
+def after_scenario(context, scenario):
+    if hasattr(context, 'returncode'):
+        context.returncode = 0
