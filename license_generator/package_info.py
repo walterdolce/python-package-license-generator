@@ -28,7 +28,7 @@ This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.""".format(
     license_short=__license_short__
 )
-__version__ = '0.4.0'
+__version__ = '0.5.0'
 __version_info__ = (
     "license-generator {version}\n"
     "{copyright_notice}\n"
