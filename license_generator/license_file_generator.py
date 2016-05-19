@@ -15,13 +15,16 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+from __future__ import print_function
 import os
 import shutil
-
 from license_generator.file_generator import FileGenerator
 
 
 class LicenseFileGenerator(FileGenerator):
-    def generate(self, license_path):
-        shutil.copy(license_path, os.path.join(os.getcwd(), 'LICENSE'))
-        print 'License "{license_file}" generated.'.format(license_file=license_path)
+    def generate(self, license_name=None, license_path=None):
+        print(license_path)
+        if not license_path:
+            license_path = os.getcwd()
+        shutil.copy(license_name, os.path.join(license_path, 'LICENSE'))
+        print('License "{license_name}" generated.'.format(license_name=license_name))

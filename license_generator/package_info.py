@@ -39,6 +39,10 @@ __version_info__ = (
 )
 __usage_info__ = """usage:
     license-generator generate A_LICENSE    # Generates the license specified, see README.rst for more info.
+
+        Options for 'generate':
+            --destination-dir PATH          # The path to generate the LICENSE file in.
+
     license-generator help                  # Shows this output.
     license-generator version               # Shows the program version, copyright notice and legal status."""
 

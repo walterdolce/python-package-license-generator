@@ -15,8 +15,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-import pprint
-import subprocess
 import license_generator
 import os
 from behave import *
@@ -24,15 +22,14 @@ from behave import *
 
 @when(u'I run the license-generator "{command_name}" command')
 def step_impl(context, command_name):
-    context.run_command(command_name)
+    context.run_command('license-generator {command}'.format(command=command_name))
 
 
 @when(u'I run the license-generator "{command_name}" command with no arguments')
 def step_impl(context, command_name):
     try:
-        context.run_command(command_name)
+        context.run_command('license-generator {command}'.format(command=command_name))
     except Exception as e:
-        pprint.pprint(context.__dict__)
         if hasattr(e, 'returncode'):
             context.returncode = e.returncode
         if hasattr(e, 'output'):
@@ -71,7 +68,7 @@ def step_impl(context):
 
 @when(u'I run the license-generator')
 def step_impl(context):
-    context.run_command('')
+    context.run_command('license-generator')
 
 
 @then(u'I should see the usage info')

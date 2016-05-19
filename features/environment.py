@@ -15,9 +15,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-import pprint
 import subprocess
-import license_generator
+import shutil
 import os
 from types import MethodType
 
@@ -28,12 +27,9 @@ def assert_command_output_presence(self):
         raise RuntimeError('The context has no command_output attribute set.')
 
 
-def run_command(self, command_name):
+def run_command(self, command):
     os.chdir(self.testing_ground_path)
-    self.command_output = subprocess.check_output(
-        license_generator.package_info.__command_format__.format(command_name=command_name),
-        shell=True
-    )
+    self.command_output = subprocess.check_output(command, shell=True)
     os.chdir(self.base_path)
 
 
@@ -60,7 +56,7 @@ def after_feature(context, feature):
         license_file = os.path.join(context.testing_ground_path, 'LICENSE')
         if os.path.exists(license_file):
             os.remove(license_file)
-        os.rmdir(context.testing_ground_path)
+        shutil.rmtree(context.testing_ground_path)
     os.chdir(context.base_path)
 
 

@@ -15,8 +15,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-import pprint
-
+from __future__ import print_function
 from behave import *
 import subprocess
 import os
@@ -25,34 +24,28 @@ from license_generator.exceptions import FileGenerationError
 
 @given(u'the license-generator package is installed on the system')
 def step_impl(context):
+    os.chdir(context.base_path)
     subprocess.check_output(
-        'python {base_path}/setup.py develop'.format(base_path=context.base_path),
+        'python {setup_package} develop'.format(setup_package=os.path.join(context.base_path, 'setup.py')),
         shell=True
     )
     subprocess.check_call('which license-generator', shell=True)
+    os.chdir(context.testing_ground_path)
 
 
 @when(u'I run the license-generator "{command_name}" command with "{command_parameter}" as argument')
 def step_impl(context, command_name, command_parameter):
-    process_error = None
-    os.chdir(context.testing_ground_path)
     try:
-        subprocess.check_output(
+        output = subprocess.check_output(
             'license-generator {command_name} {command_parameter}'.format(
                 command_name=command_name,
                 command_parameter=command_parameter
             ),
             shell=True
         )
+        print(output)
     except Exception as e:
-        process_error = e
-    finally:
-        if process_error is not None:
-            pprint.pprint(process_error.__dict__)
-            raise Exception('bla')
-            # raise process_error
-
-    os.chdir(context.base_path)
+        pass
 
 
 @then(u'the "{license_filename}" file is generated')
@@ -86,6 +79,18 @@ def step_impl(context):
     if not context.returncode:
         raise RuntimeError('No returncode attribute was set in the context object.')
     assert (context.returncode != 0)
+
+
+@given(u'the directory "{directory_path}" exists')
+def step_impl(context, directory_path):
+    directory_path = os.path.join(context.testing_ground_path, directory_path)
+    os.makedirs(name=directory_path)
+    assert (os.path.exists(directory_path) == True)
+
+
+@when(u'I run "{command}')
+def step_impl(context, command):
+    context.run_command(command)
 
 
 def readfile(license_file):

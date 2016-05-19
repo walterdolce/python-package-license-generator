@@ -19,6 +19,14 @@ Example: ::
     $ license-generator generate MIT
 
 
+This commend will generate a LICENSE file in the current directory.
+It is also possible to generate a license in your preferred directory.
+Example: ::
+
+    $ license-generator generate MIT --destination-dir 'some/path'
+
+This command will generate the LICENSE file in "some/path".
+
 Commands Available
 ------------------
 

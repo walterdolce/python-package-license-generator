@@ -50,3 +50,10 @@ Feature: License generation
     When I run the license-generator "generate" command with no arguments
     Then I will be remainded to specify a license name
     And the program will exit with an error code
+
+  Scenario: It generates the license in the specified location
+    Given the license-generator package is installed on the system
+    And the directory "some/project" exists
+    When I run "license-generator generate MIT --destination-dir 'some/project'
+    Then the "some/project/LICENSE" file is generated
+    And the generated "some/project/LICENSE" file contains the "mit" license

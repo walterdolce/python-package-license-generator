@@ -16,17 +16,13 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+from __future__ import print_function
 import sys
 import license_generator
 
 if __name__ == '__main__':
     try:
-        license_generator = license_generator.LicenseGenerator()
-        license_generator.run_command(sys.argv)
-    finally:
-        exception = sys.exc_info()
-        if exception[1] is not None:
-            print(exception[1])
-            exit(1)
-
-# TODO add scenario to verify failure of bin/license-generator when no license type parameter is passed
+        license_generator.LicenseGenerator().run_command(sys.argv)
+    except Exception as e:
+        print(e.message)
+        exit(1)
