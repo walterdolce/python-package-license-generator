@@ -45,5 +45,3 @@ __usage_info__ = """usage:
 
     license-generator help                  # Shows this output.
     license-generator version               # Shows the program version, copyright notice and legal status."""
-
-__all__ = ['__author__']
