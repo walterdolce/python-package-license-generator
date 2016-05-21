@@ -18,22 +18,22 @@
 Feature: Package information
   In order to know more about the license-generator package
   As a user
-  I want to be able to get relevant information from the package about itself
+  I want to be able to get relevant information about the package from the package itself
+
+  Background:
+    Given the license-generator package is installed on the system
 
   Scenario: User asks for package version information
-    Given the license-generator package is installed on the system
     When I run the license-generator "version" command
-    Then I should see its name
-    And I should see its version
-    And I should see its copyright notice
-    And I should see its legal status
+    Then I see its name
+    And I see its version
+    And I see its copyright notice
+    And I see its legal status
 
   Scenario: User doesn't send any command
-    Given the license-generator package is installed on the system
     When I run the license-generator
-    Then I should see the usage info
+    Then I see its usage info
 
   Scenario: User asks for usage info
-    Given the license-generator package is installed on the system
     When I run the license-generator "help" command
-    Then I should see the usage info
+    Then I see its usage info

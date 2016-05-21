@@ -32,9 +32,9 @@ except ImportError:
     )
     sys.exit(1)
 
-from license_generator.package_info import __version__ as version
-from license_generator.package_info import __author__ as author
-from license_generator.package_info import __author_email__ as author_email
+from license_generator.package.info import __version__ as version
+from license_generator.package.info import __author__ as author
+from license_generator.package.info import __author_email__ as author_email
 
 setup(
     name='license_generator',

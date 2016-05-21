@@ -16,9 +16,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 from __future__ import print_function
-from behave import *
 import subprocess
 import os
+from behave import *
+from license_generator.package.messages import __no_license_generated__ as no_license_generated_message
 from license_generator.exceptions import FileGenerationError
 
 
@@ -26,26 +27,37 @@ from license_generator.exceptions import FileGenerationError
 def step_impl(context):
     os.chdir(context.base_path)
     subprocess.check_output(
-        'python {setup_package} develop'.format(setup_package=os.path.join(context.base_path, 'setup.py')),
+        'python {setup_package} develop'.format(
+            setup_package=os.path.join(context.base_path, 'setup.py')
+        ),
         shell=True
     )
-    subprocess.check_call('which license-generator', shell=True)
+    context.assert_license_generator_existence()
     os.chdir(context.testing_ground_path)
+
+
+@given(u'the directory "{directory_path}" exists')
+def step_impl(context, directory_path):
+    directory_path = os.path.join(context.testing_ground_path, directory_path)
+    os.makedirs(name=directory_path)
+    assert (os.path.exists(directory_path) == True)
+
+
+@when(u'I run "{command}')
+def step_impl(context, command):
+    context.run_command(command)
 
 
 @when(u'I run the license-generator "{command_name}" command with "{command_parameter}" as argument')
 def step_impl(context, command_name, command_parameter):
-    try:
-        output = subprocess.check_output(
-            'license-generator {command_name} {command_parameter}'.format(
-                command_name=command_name,
-                command_parameter=command_parameter
-            ),
-            shell=True
-        )
-        print(output)
-    except Exception as e:
-        pass
+    context.assert_license_generator_existence()
+    subprocess.check_output(
+        'license-generator {command_name} {command_parameter}'.format(
+            command_name=command_name,
+            command_parameter=command_parameter
+        ),
+        shell=True
+    )
 
 
 @then(u'the "{license_filename}" file is generated')
@@ -68,10 +80,10 @@ def step_impl(context, license_filename, license_type):
     assert (builtin_license_content == generated_license_content)
 
 
-@then(u'I will be remainded to specify a license name')
+@then(u'I will be reminded to specify a license name')
 def step_impl(context):
     context.assert_command_output_presence()
-    assert (context.command_output.strip() == 'No license to generate was specified.')
+    assert (context.command_output.strip() == no_license_generated_message)
 
 
 @then(u'the program will exit with an error code')
@@ -79,18 +91,6 @@ def step_impl(context):
     if not context.returncode:
         raise RuntimeError('No returncode attribute was set in the context object.')
     assert (context.returncode != 0)
-
-
-@given(u'the directory "{directory_path}" exists')
-def step_impl(context, directory_path):
-    directory_path = os.path.join(context.testing_ground_path, directory_path)
-    os.makedirs(name=directory_path)
-    assert (os.path.exists(directory_path) == True)
-
-
-@when(u'I run "{command}')
-def step_impl(context, command):
-    context.run_command(command)
 
 
 def readfile(license_file):

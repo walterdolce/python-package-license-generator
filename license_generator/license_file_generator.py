@@ -23,7 +23,6 @@ from license_generator.file_generator import FileGenerator
 
 class LicenseFileGenerator(FileGenerator):
     def generate(self, license_name=None, license_path=None):
-        print(license_path)
         if not license_path:
             license_path = os.getcwd()
         shutil.copy(license_name, os.path.join(license_path, 'LICENSE'))

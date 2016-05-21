@@ -15,19 +15,5 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-import unittest
-from license_generator.file_generator import FileGenerator
-
-
-class TestFileGenerator(unittest.TestCase):
-    def test_it_raises_an_error_when_its_method_is_called_but_not_implemented(self):
-        with self.assertRaises(NotImplementedError):
-            erroneous = IncompleteFileGenerator()
-            erroneous.generate('foo', 'in_bar')
-
-
-class IncompleteFileGenerator(FileGenerator):
-    pass
-
-if __name__ == '__main__':
-    unittest.main()
+import info
+import messages

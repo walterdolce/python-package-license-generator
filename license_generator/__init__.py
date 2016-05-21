@@ -17,8 +17,10 @@
 #
 from __future__ import print_function
 import os
-from license_generator.package_info import __usage_info__ as usage_info
-from license_generator.package_info import __version_info__ as version_info
+from license_generator.file_generator import FileGenerator
+from license_generator.file_locator import FileLocator
+from license_generator.package.info import __usage_info__ as usage_info
+from license_generator.package.info import __version_info__ as version_info
 from license_generator.agplv3_transliterator import AGPLv3Transliterator
 from license_generator.apache2_transliterator import Apache2Transliterator
 from license_generator.gplv3_transliterator import GPLv3Transliterator
@@ -29,19 +31,32 @@ from license_generator.mit_transliterator import MitTransliterator
 from license_generator.mplv2_transliterator import MPLv2Transliterator
 from license_generator.transliterable import Transliterable
 from license_generator.unlicense_transliterator import UnlicenseTransliterator
+from license_generator.package.messages import __no_license_generated__ as no_license_generated_message
 
 
 class LicenseGenerator(object):
+    _file_locator = None
+    _file_generator = None
+
+    def __init__(self, file_locator=FileLocator, file_generator=FileGenerator):
+        self._file_locator = file_locator
+        self._file_generator = file_generator
+
     def help(self):
         self.run_command('help')
 
     def generate(self, license_name=None, destination_dir=None):
         if not license_name:
-            print('No license to generate was specified.')
-            exit(1)
+            self._exit_with_message(no_license_generated_message, code=1)
 
         license_name = self._transliterate_license_name(license_name)
+        license_name = self._file_locator.locate(license_name)
+        license_path = self._compute_license_path(destination_dir)
 
+        self._file_generator.generate(license_name, license_path)
+
+    def _compute_license_path(self, destination_dir=None):
+        license_path = None
         if destination_dir:
             if not os.path.exists(os.path.abspath(destination_dir)):
                 raise IOError(
@@ -50,13 +65,7 @@ class LicenseGenerator(object):
                     )
                 )
             license_path = os.path.abspath(destination_dir)
-        else:
-            license_path = None
-
-        license_name = LicenseFileLocator().locate(license_name)
-
-        generator = LicenseFileGenerator()
-        generator.generate(license_name=license_name, license_path=license_path)
+        return license_path
 
     def _transliterate_license_name(self, license_name):
         agplv3_transliterator = AGPLv3Transliterator()
@@ -79,17 +88,6 @@ class LicenseGenerator(object):
 
     def run_command(self, *args):
         args = args[0]
-        destination_dir = None
-        enumerated = enumerate(args)
-        for (index, argument) in enumerated:
-            if argument == '--destination-dir':
-                try:
-                    destination_dir = enumerated.next()[1]
-                except StopIteration:
-                    destination_dir = None
-                finally:
-                    if destination_dir is not None:
-                        break
 
         if len(args) < 1:
             self.help()
@@ -98,6 +96,18 @@ class LicenseGenerator(object):
             command = args[1]
         except IndexError:
             command = 'help'
+
+        destination_dir = None
+        enumerated_args = enumerate(args)
+        for (index, argument) in enumerated_args:
+            if argument == '--destination-dir':
+                try:
+                    destination_dir = enumerated_args.next()[1]
+                except StopIteration:
+                    destination_dir = None
+                finally:
+                    if destination_dir is not None:
+                        break
 
         if command == 'help':
             self._exit_with_message(usage_info)
@@ -108,11 +118,8 @@ class LicenseGenerator(object):
                 license_name = args[2]
             except IndexError:
                 license_name = None
-            self.generate(
-                license_name=license_name,
-                destination_dir=destination_dir
-            )
+            self.generate(license_name, destination_dir)
 
-    def _exit_with_message(self, message):
+    def _exit_with_message(self, message, code=0):
         print(message)
-        exit(0)
+        exit(code)

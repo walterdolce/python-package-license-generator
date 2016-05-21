@@ -22,7 +22,10 @@ import license_generator
 
 if __name__ == '__main__':
     try:
-        license_generator.LicenseGenerator().run_command(sys.argv)
+        license_generator.LicenseGenerator(
+            license_generator.LicenseFileLocator(),
+            license_generator.LicenseFileGenerator()
+        ).run_command(sys.argv)
     except Exception as e:
         print(e.message)
         exit(1)

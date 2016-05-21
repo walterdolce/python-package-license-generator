@@ -18,5 +18,5 @@
 
 
 class FileGenerator(object):
-    def generate(self, license_path):
+    def generate(self, license_name, license_path):
         raise NotImplementedError('Unimplemented method "generate" was called from base class.')

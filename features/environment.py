@@ -21,27 +21,33 @@ import os
 from types import MethodType
 
 
-def assert_command_output_presence(self):
+def assert_command_output_presence(context):
     """Verifies whether the context has the command_output attribute set."""
-    if not hasattr(self, 'command_output'):
+    if not hasattr(context, 'command_output'):
         raise RuntimeError('The context has no command_output attribute set.')
 
 
-def run_command(self, command):
-    os.chdir(self.testing_ground_path)
-    self.command_output = subprocess.check_output(command, shell=True)
-    os.chdir(self.base_path)
+def run_command(context, command):
+    """Runs a command with subprocess.check_output within the testing ground context."""
+    os.chdir(context.testing_ground_path)
+    context.command_output = subprocess.check_output(command, shell=True)
+    os.chdir(context.base_path)
+
+
+def assert_license_generator_existence(context):
+    """Checks whether the license-generator executable exists."""
+    subprocess.check_call('which license-generator', shell=True)
 
 
 def before_all(context):
+    """Adds capabilities to the context object."""
     context.assert_command_output_presence = MethodType(assert_command_output_presence, context)
+    context.assert_license_generator_existence = MethodType(assert_license_generator_existence, context)
     context.run_command = MethodType(run_command, context)
 
 
 def before_feature(context, feature):
-    """
-    Prepares the ground for the license file(s) to be created.
-    """
+    """Prepares the ground for the license file(s) to be created."""
     context.base_path = os.getcwd()
     context.testing_ground_path = os.path.join(context.base_path, 'testing-ground')
     if not os.path.exists(context.testing_ground_path):
@@ -49,9 +55,7 @@ def before_feature(context, feature):
 
 
 def after_feature(context, feature):
-    """
-    Clears everything up.
-    """
+    """Deletes files and directories created for verifying the package behaviour."""
     if os.path.exists(context.testing_ground_path):
         license_file = os.path.join(context.testing_ground_path, 'LICENSE')
         if os.path.exists(license_file):
@@ -61,5 +65,6 @@ def after_feature(context, feature):
 
 
 def after_scenario(context, scenario):
+    """Resets the last command return code assigned to the context to 0 if present."""
     if hasattr(context, 'returncode'):
         context.returncode = 0
