@@ -1,5 +1,6 @@
 .. image:: https://travis-ci.org/walterdolce/python-package-license-generator.svg?branch=master
     :target: https://travis-ci.org/walterdolce/python-package-license-generator
+.. _Requirements for Installing Packages: https://packaging.python.org/en/latest/installing/#installing-requirements
 
 ===========
 Development
@@ -17,6 +18,15 @@ on your system:
 - Pip (I started working on the package with pip 8.1.1)
 - Virtualenv
 - Git
+
+======================================
+Preparing your development environment
+======================================
+Before jumping straight to code, you might need to prepare your development environment first.
+In order to do that, I suggest to have a read at the `Requirements for Installing Packages`_ page from the Python
+Packaging User Guide.
+
+You should find information on how to install ``pip``, ``setuptools``, ``wheels`` and ``virtualenv``.
 
 =========================================
 Isolate the development environment first
