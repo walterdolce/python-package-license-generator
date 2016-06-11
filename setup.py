@@ -16,25 +16,29 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-import sys
-import os
-
-sys.path.insert(0, os.path.abspath('license_generator'))
+from sys import path as sys_path
+from sys import exit
+from os import path as os_path
+from codecs import open
 
 try:
     from setuptools import setup
 except ImportError:
     print(
         "license-generator needs setuptools in order to build."
-        # TODO ask it we'd take care of setting up/installing one?
         "Install it using your package manager (usually python-setuptools)"
         "or via pip (pip install setuptools)."
     )
-    sys.exit(1)
+    exit(1)
+
+sys_path.insert(0, os_path.abspath('license_generator'))
 
 from license_generator.package.info import __version__ as version
 from license_generator.package.info import __author__ as author
 from license_generator.package.info import __author_email__ as author_email
+
+with open(os_path.join(os_path.abspath(os_path.dirname(__file__)), 'README.rst'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
     name='license_generator',
@@ -42,11 +46,20 @@ setup(
     author=author,
     author_email=author_email,
     description='A command line tool for generating license files',
+    long_description=long_description,
     license='GPLv3',
-    keywords='license generator cli utility file licenses generators utilities files',
+    keywords='license generator cli utility tool file licenses generators utilities files tools',
     packages=['license_generator'],
     scripts=[
         'bin/license-generator'
     ],
-    test_suite='test'
+    test_suite='test',
+    url='https://github.com/walterdolce/python-package-license-generator',
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers',
+        'Topic :: Software Development :: Build Tools',
+        'License :: OSI Approved :: GPLv3',
+        'Programming Language :: Python :: 2.7'
+    ]
 )
